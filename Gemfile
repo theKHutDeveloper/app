@@ -43,6 +43,8 @@ gem 'acts-as-messageable', '~> 0.4.10'
 
 gem 'simple_form', '~> 3.4'
 
+gem 'rails_admin', '~> 1.1', '>= 1.1.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

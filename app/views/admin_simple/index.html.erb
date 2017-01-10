@@ -1,0 +1,32 @@
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+
+  <p id="welcome">Request, Swap and View Lockers within GDS</p>
+  
+</div>
+
+<h1>Admin Panel</h1>
+<br>
+
+<table class="table table-striped">
+	<thead>
+		<th>Table</th>
+		<th>Actions</th>
+		<th></th>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>Users</td>
+			<td><%=link_to "Invite a user", '#' %> </td>
+			<td><%=link_to "Edit users", '#' %></td>
+		</tr>
+
+		<tr>
+			<td>Lockers</td>
+			<td><%=link_to "Create a new locker", '#' %> </td>
+			<td><%= link_to "Edit lockers", '#' %></td>
+		</tr>
+	
+	</tbody>
+</table>
