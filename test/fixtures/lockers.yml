@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  'no': MyString
+  floor: 1
+  location: MyString
+  shared: false
+  size: 1
+  status: MyString
+
+two:
+  'no': MyString
+  floor: 1
+  location: MyString
+  shared: false
+  size: 1
+  status: MyString

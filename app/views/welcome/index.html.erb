@@ -1,0 +1,49 @@
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+
+  <p id="welcome">Request, Swap and View Lockers within GDS</p>
+  
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+</div>
+
+<div class="row">
+  	<div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <a href= <%=locker_index_path%>><img src="/assets/locker_open.jpg" alt="empty locker"></a>
+        <div class="caption">
+          <h4>Available lockers</h3>
+        </div>
+      </div>
+  	</div>
+
+  	<div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <a href="#"><img src="/assets/envelopes.png" alt="three envelopes"></a>
+        <div class="caption">
+          <h4>View your messages</h3>
+        </div>
+      </div>
+  	</div>
+
+    <div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <a href= <%=user_index_path %> ><img src="/assets/account_details.png" alt="account settings"></a>
+        <div class="caption">
+          <h4>View account details</h3>
+        </div>
+      </div>
+  	</div>
+
+  	<div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <a href= <%=admin_index_path%> ><img src="/assets/admin.png" alt="administrator"></a>
+        <div class="caption">
+          <h4>Administrators</h3>
+        </div>
+      </div>
+  	</div>
+
+</div>
+
+
+<!--<h5><%= link_to "View available lockers", locker_index_path %></h5>-->
