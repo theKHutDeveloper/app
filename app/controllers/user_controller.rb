@@ -1,5 +1,6 @@
 class UserController < ApplicationController
-  
+    before_action :authenticate_user!
+
   def new
   end
 
@@ -19,5 +20,9 @@ class UserController < ApplicationController
   end
 
   def show
+    if current_user
+      @lockers = Locker.joins(:users)
+    end
   end
+  
 end

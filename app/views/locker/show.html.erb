@@ -1,0 +1,31 @@
+
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+  <p id="welcome">Newly Created Locker</p>
+</div>
+<br>
+
+<table class="table table-striped">
+	<tr>
+		<th>Locker no.</th>
+		<th>Floor no.</th>
+		<th>Location</th>
+		<th>Size</th>
+		<th>Status</th>
+		<th>Shared</th>
+	</tr>
+
+
+	<tr>
+		<td><%= @locker.locker_id %></td>
+		<td><%= @locker.floor %></td>
+		<td><%= @locker.location %></td>
+		<td><%= @locker.size %></td>
+		<td><%= @locker.status %></td>
+		<td><%= @locker.shared %></td>
+
+	</tr>
+	
+</table>
+
+<%= link_to "Back", admin_simple_index_path %>

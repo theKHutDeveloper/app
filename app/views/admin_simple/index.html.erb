@@ -1,11 +1,10 @@
 <div class="jumbotron">
   <h1 id="header">Locker Dashboard</h1>
 
-  <p id="welcome">Request, Swap and View Lockers within GDS</p>
+  <p id="welcome">Administration Panel</p>
   
 </div>
 
-<h1>Admin Panel</h1>
 <br>
 
 <table class="table table-striped">
@@ -24,7 +23,7 @@
 
 		<tr>
 			<td>Lockers</td>
-			<td><%=link_to "Create a new locker", '#' %> </td>
+			<td><%=link_to "Create a new locker", new_locker_path %></td>
 			<td><%= link_to "Edit lockers", '#' %></td>
 		</tr>
 	

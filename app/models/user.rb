@@ -9,4 +9,6 @@ class User < ApplicationRecord
         
 
   belongs_to :locker
+
+  #scope :assigned, -> Locker.where{ (locker_id: = User.locker_id) }
 end

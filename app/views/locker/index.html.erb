@@ -1,1 +1,32 @@
-<h1>Locker Index</h1>
+<% if params[:status] == 'Free' %>
+	<% heading = 'Available Lockers' %>
+<% elsif params[:status].blank? %>
+	<% heading = 'All Lockers' %>
+<% end %>
+
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+  <p id="welcome"><%=heading %></p>
+
+</div>
+
+<table class="table table-striped">
+	<tr>
+		<th>Locker no.</th>
+		<th>Floor no.</th>
+		<th>Location</th>
+		<th>Size</th>
+		<th>Status</th>
+	</tr>
+
+	<% @locker.each do |locker| %>
+	<tr>
+		<td><%= link_to locker.locker_id, "#" %></td>
+		<td><%= locker.floor %></td>
+		<td><%= locker.location %></td>
+		<td><%= locker.size %></td>
+		<td><%= locker.status %></td>
+
+	</tr>
+	<% end %>
+</table>
