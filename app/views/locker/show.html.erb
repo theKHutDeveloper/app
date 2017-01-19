@@ -1,7 +1,7 @@
 
 <div class="jumbotron">
   <h1 id="header">Locker Dashboard</h1>
-  <p id="welcome">Newly Created Locker</p>
+  <p id="welcome">Locker Details</p>
 </div>
 <br>
 
@@ -22,10 +22,13 @@
 		<td><%= @locker.location %></td>
 		<td><%= @locker.size %></td>
 		<td><%= @locker.status %></td>
-		<td><%= @locker.shared %></td>
+		<% if @locker.shared == false %>
+			<td>No</td>
+		<% else %>
+			<td>Yes</td>
+		<% end %>
 
 	</tr>
 	
 </table>
 
-<%= link_to "Back", admin_simple_index_path %>

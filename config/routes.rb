@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   
   get 'user/show'
 
-  
+  get 'locker/test'
   
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 

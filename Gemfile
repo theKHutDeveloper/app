@@ -38,17 +38,20 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 gem 'devise', '~> 4.2'
 gem 'devise_invitable', '~> 1.7.0'
-
 gem 'acts-as-messageable', '~> 0.4.10'
-
 gem 'simple_form', '~> 3.4'
-
 gem 'rails_admin', '~> 1.1', '>= 1.1.1'
+gem 'will_paginate', '~> 3.1.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 end
+
+group :test, :spec do
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
+  gem 'capybara-rails', '~> 0.0.2'
+end 
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.

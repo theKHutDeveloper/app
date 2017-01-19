@@ -1,6 +1,8 @@
 class Locker < ApplicationRecord
 	has_many :users
 
+	accepts_nested_attributes_for :users
+	
 	scope :available, -> { where(status: "Free") }
 	scope :complete, -> {order("locker_id DESC")}
 

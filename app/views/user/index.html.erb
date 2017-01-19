@@ -15,6 +15,23 @@
 			<th> </th>
 		</tr>
 	</thead>
+
+	<tbody>
+		<% @users.each do |user| %>
+			<tr>
+			<td><a href= '#' class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+			<td><%= user.email %></td>
+			<td><%= user.firstname%></td>
+			<td><%= user.lastname %></td>
+			<% if user.locker_id == "" %>
+				<td>--</td>
+			<% else %>
+				<td><%= user.locker_id %></td>
+			<% end %>
+			<td><a href= '#' class="btn btn-primary btn-xs" role="button">Edit</a></td>
+			</tr>
+		<% end %>
+	</tbody>
 </table>
 
 

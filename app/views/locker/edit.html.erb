@@ -1,0 +1,53 @@
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+  <p id="welcome">Edit Locker</p>
+</div>
+
+<table class="table table-striped">
+	<tr>
+		<th>Locker no.</th>
+		<th>Floor no.</th>
+		<th>Location</th>
+		<th>Size</th>
+		<th>Status</th>
+		<th>Shared</th>
+	</tr>
+
+
+	<tr>
+
+	<td><%= @locker.locker_id %></td>
+		<td><%= @locker.floor %></td>
+		<td><%= @locker.location %></td>
+		<td><%= @locker.size %></td>
+		<td><%= @locker.status %></td>
+		<% if @locker.shared == false %>
+			<td>No</td>
+		<% else %>
+			<td>Yes</td>
+		<% end %>
+		<!--<td><%= select_tag('user_details', options_from_collection_for_select(@users, :email, :email, :id), :prompt => "Please select") %></td>
+		<td><a href= '#' class="btn btn-danger btn-xs" role="button">Save</a></td>-->
+</tr>
+
+
+</table>
+
+<%= simple_form_for @locker do |f| %>
+
+	<% if @assigned == true %>
+		<% message = "Select from users assigned to locker #{@locker.locker_id}" %>
+	<% else %>
+		<% message = "Select user/s to assign to locker #{@locker.locker_id}" %>
+	<% end %>
+
+	<!--I want to change this so that if assigned is false you show the collection select otherwise
+	you show the users in fields as their realistically isn't going to be a lot of users sharing lockers 
+	-->
+
+	<%= f.collection_select :users, @users, :email, :email , {prompt: message}, {class: "form-control"} %>
+
+	<br>
+	<%= f.submit %>
+<% end %>
+
