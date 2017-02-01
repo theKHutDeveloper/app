@@ -1,17 +1,25 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  'no': MyString
-  floor: 1
-  location: MyString
+  'no': G001
+  floor: 3
+  location: Verify Team
   shared: false
   size: 1
-  status: MyString
+  status: Free
 
 two:
-  'no': MyString
-  floor: 1
-  location: MyString
+  'no': G002
+  floor: 3
+  location: PAAS
   shared: false
-  size: 1
-  status: MyString
+  size: 2
+  status: Assigned
+
+three:
+  'no': G003
+  floor: 6
+  location: Content Team
+  shared: true
+  size: 3
+  status: Assigned

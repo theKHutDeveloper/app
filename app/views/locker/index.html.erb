@@ -78,10 +78,14 @@
 				<td><a href= <%=edit_locker_path(locker)%> class="btn btn-info btn-xs" role="button">Edit Locker</a></td>
 			<% end %>
 		<% elsif params[:status] == 'Free' && current_user.locker_id.nil? %>
-			<td><a href= '#' class="btn btn-primary btn-xs" role="button">Request This Locker</a></td>
+			<td><a href= '#' class="btn btn-primary btn-xs" 
+			onclick="alert('Your request has been sent')"
+			role="button">Request This Locker</a></td>
 		<% end %>
 
 	</tr>
 	<% end %>
+
+
 </table>
 

@@ -3,51 +3,89 @@
   <p id="welcome">Edit Locker</p>
 </div>
 
+
+
 <table class="table table-striped">
 	<tr>
+		<th></th>
 		<th>Locker no.</th>
 		<th>Floor no.</th>
 		<th>Location</th>
 		<th>Size</th>
 		<th>Status</th>
 		<th>Shared</th>
+		<% if @assigned == true %>
+			<th>Assigned Users</th>
+			<th></th>
+		<% end %>
 	</tr>
 
-
+	<%= simple_form_for @locker, wrapper: :inline_form, html: { class: 'form-inline' } do |f| %>
 	<tr>
-
-	<td><%= @locker.locker_id %></td>
-		<td><%= @locker.floor %></td>
-		<td><%= @locker.location %></td>
-		<td><%= @locker.size %></td>
-		<td><%= @locker.status %></td>
-		<% if @locker.shared == false %>
-			<td>No</td>
-		<% else %>
-			<td>Yes</td>
-		<% end %>
-		<!--<td><%= select_tag('user_details', options_from_collection_for_select(@users, :email, :email, :id), :prompt => "Please select") %></td>
-		<td><a href= '#' class="btn btn-danger btn-xs" role="button">Save</a></td>-->
-</tr>
-
+  		<td style="vertical-align:middle; padding-top:0.5px;"><a href= '#' class="btn btn-danger btn-xs" role="button">Delete Locker</a></td>
+  
+  		<td><%= f.input :locker_id, disabled: true %></td>
+  
+  		<td><%= f.input :floor %></td>
+  	
+  		<td><%= f.input :location %></td>
+  
+  		<td><%= f.input :size %></td>
+  
+  		<td><%= f.input :status, disabled: true %></td>
+  
+  		<td><%= f.input :shared, disabled: true %></td>
+  
+  		<% if @assigned == true %>
+			<% @assigned_users.each do |assigned_user| %>
+		
+				<td style="vertical-align:middle; padding-top:0.5px;"><%= assigned_user.email %></td>	
+		
+				<td style="vertical-align:middle; padding-top:0.5px;">
+					<%= link_to '<button type="button" class="btn btn-danger btn-xs">Delete</button>'.html_safe,
+					locker_path(@locker, :user => assigned_user), :method => :put%>
+				</td>
+		
+				<tr></tr>
+		
+				<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+			<% end %>
+	
+			<td></td><td></td>
+  		<% end %>
+  
+	</tr>
 
 </table>
 
-<%= simple_form_for @locker do |f| %>
 
-	<% if @assigned == true %>
-		<% message = "Select from users assigned to locker #{@locker.locker_id}" %>
-	<% else %>
-		<% message = "Select user/s to assign to locker #{@locker.locker_id}" %>
-	<% end %>
+<div>
+	<h4>Select user/s to assign to locker <%= @locker.locker_id %></h4>
+	
+		<%= f.collection_select :users, @users, :email, :email , {prompt: "Select"}, {class: "form-control"} %>	
+		<br><br>
+		
+		
+</div>
+<%= f.submit %>
+<% end %>	
 
-	<!--I want to change this so that if assigned is false you show the collection select otherwise
-	you show the users in fields as their realistically isn't going to be a lot of users sharing lockers 
-	-->
 
-	<%= f.collection_select :users, @users, :email, :email , {prompt: message}, {class: "form-control"} %>
 
-	<br>
-	<%= f.submit %>
-<% end %>
+<!--
+#link_to "Add as friend", user_friend_path(current_user, @friend), :method=> :put
+	
+<%= link_to #'<button type="button" class="btn btn-danger btn-xs">Delete</button>'.html_safe,
+			#			:controller => 'locker', :action => :update,
+			#			data: {confirm: "Are you sure you want to delete user #{assigned_user.email}?"}
+					
+					 	%>
+user_path(assigned_user.email) 
+	Admin should only be able to delete a locker if there are no users. If there are users and the admin has pressed on the delete button, alert them that they can not delete a locker while users are still attached to it.
+
+	Added delete button next to user email, hopefully I will be able to delete a user from here
+
+	data = "{confirm('Are you sure?')}" is not working properly I think!!
+-->
+
 

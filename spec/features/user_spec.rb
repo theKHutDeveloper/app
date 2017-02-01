@@ -11,6 +11,13 @@ def createUser
 	@non_admin = User.create email: 'ironman@stark.industries.com', password: 'jarvis', firstname: 'tony', lastname: 'stark', admin: 'false'
 end
 
+def createMultipleUsers
+	@one = User.create email:'luke_cage@superhero.com', password: 'harlem_heat', firstname: "luke", lastname: "cage", admin: "false"
+	@two = User.create email:'murdoch@superhero.com', password: "daredevil", firstname: "matt", lastname: "murdoch", admin: "false"
+	@three = User.create email:'punisher@antihero.com', password: 'punishThem', firstname: "frank", lastname: "castle", admin: "false"
+	@four = User.create email:'nelsonandmurdoch@lawyers.com', password: "sidekick", firstname: "foggy", lastname: "nelson", admin: "true"
+	@five = User.create email:'badguyincorporated@acme.com', password: "master0criminal", firstname: "wilson", lastname: "fisk", admin: "false"
+end
 
 def logIn(email, password)
 	visit root_path
@@ -23,16 +30,23 @@ end
 
 RSpec.feature 'Testing functionality of the User features' do
 
-	scenario 'Non-admin user views their details' do
+	scenario '- Non-admin user views their details' do
+		visit root_path
 		createUser
 		logIn(@non_admin.email, @non_admin.password)
 		page.click_link('', :href => '/user/show')
 		expect(page).to have_content("My Account Details")
-		expect(page).to have_content('Basic')
+		expect(page).to have_content('Standard')
 	end
 
+	scenario '- User signs out' do
+		createUser
+		logIn(@non_admin.email, @non_admin.password)
+		click_link('Sign Out')
+		expect(page).to have_content("Signed out successfully")
+	end
 
-	scenario 'Non-admin user edits their password' do
+	scenario '- Non-admin user edits their password' do
 		createUser
 		logIn(@non_admin.email, @non_admin.password)
 		page.click_link('', :href => '/user/show')
@@ -45,7 +59,7 @@ RSpec.feature 'Testing functionality of the User features' do
 		expect(page).to have_content('Your account has been updated successfully')
 	end
 
-	scenario 'Admin user edits their lastname' do
+	scenario '- Admin user edits their lastname' do
 		createAdmin
 		logIn(@user.email, @user.password)
 		page.click_link('', href: '/user/show')
@@ -57,16 +71,16 @@ RSpec.feature 'Testing functionality of the User features' do
 		expect(page).to have_content('Your account has been updated successfully')
 	end
 
-	scenario 'Admin user views all users details' do
+	scenario ' - Admin user views all users details' do
 		createAdmin
 		logIn(@user.email, @user.password)
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Edit users')
-		expect(current_path).to eq '/users'
+		expect(current_path).to eq '/user'
  	end
 
 
-	scenario 'Admin user edits a users firstname' do
+	scenario '- Admin user edits a users firstname' do
 		createMultipleUsers
 		createAdmin
 		logIn(@user.email, @user.password)
@@ -80,7 +94,7 @@ RSpec.feature 'Testing functionality of the User features' do
 	end
 
 
-	scenario 'Admin amends a user account to Admin status' do
+	scenario '- Admin amends a user account to Admin status' do
 		createMultipleUsers
 		createAdmin
 		logIn(@user.email, @user.password)
@@ -94,7 +108,7 @@ RSpec.feature 'Testing functionality of the User features' do
 	end
 
 	
-	scenario 'admin invites a potential user' do
+	scenario '- Admin invites a potential user' do
 		createAdmin
 		logIn(@user.email, @user.password)
 		page.click_link('', :href => '/admin_simple/index')
@@ -102,7 +116,7 @@ RSpec.feature 'Testing functionality of the User features' do
 	end
 
 	
-	scenario 'admin user deletes a single user' do
+	scenario '- Admin user deletes a single user' do
 		createAdmin
 		logIn(@user.email, @user.password)
 		page.click_link('', :href => '/admin_simple/index')

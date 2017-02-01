@@ -6,6 +6,9 @@ class LockerController < ApplicationController
 			@locker = Locker.complete
 		elsif current_user && params[:status] == 'Free'
 			@locker = Locker.available
+		else
+			flash[:danger] = "You do not have permission to access this page"
+			redirect_to root_path
 		end
 	end
 
@@ -41,77 +44,94 @@ class LockerController < ApplicationController
 
 
 	def edit
-		@locker = Locker.find(params[:id])
-		@users = User.where(locker_id: @locker.locker_id)
-		@assigned = true
-
-		if @users.count == 0
-			@users = User.where(locker_id: nil) 
+		if current_user.admin?
+			@locker = Locker.find(params[:id])
+			@users = User.where(locker_id: nil)
+			@assigned_users = User.where(locker_id: @locker.locker_id)
 			@assigned = false
+
+			if @assigned_users.count > 0
+				@assigned = true
+			end
+		else
+			flash[:danger] = "You do not have permission to access this page"
+			redirect_to root_path
 		end
 	end
 
 
 	def update
+		#return the specified locker
 		@locker = Locker.find(params[:id])
 
 		#count the number of users who are assigned to this locker id
 		@locker_users = User.where(locker_id: @locker.locker_id).count
 
-		#retrieves email chosen in edit.html.erb from collection_select
-		params[:locker].each do |k, v|
-      		@user = v
-    	end
+		if params[:user] #admin has selected user to delete
+			@selected_user = User.find(params[:user])
+		else #admin has selected user to add
+			params[:locker].each do |k, v|
+      			@found = v
+    		end
+    		#get the first(and only)user with specified email
+    		@user = User.where(email: @found).first
+		end
 
-    	#get user record that matches with email
-    	@selected_user = User.where(email: @user).first
-
-    	#if no matching user record exit out of save/update
-    	if @selected_user.nil?
-    		flash[:danger] = "Unidentified User - No changes have been made!"
-			redirect_to 'edit'
+    	#invalid user - no user selected for delete or addition
+    	if @selected_user.nil? && @user.nil?
+    			@locker.update(floor: @locker.floor)
+    			render 'show'
+    		
+		#valid user found
 		else
-			#valid user found
-			@locker.status = "Assigned"
+			#admin chose to add user to locker
+			if @user.present?
+				@locker.status = "Assigned"
 
-			#not shared if no other users assigned the locker
-			if @locker_users.nil?
-				@locker.shared = false
-			elsif @locker_users > 0
-				@locker.shared = true
+				#not shared if no other users assigned the locker
+				if @locker_users.nil?
+					@locker.shared = false
+				elsif @locker_users > 0
+					@locker.shared = true
+				end
+
+				#add locker id to user, save locker and user record
+				@user.locker_id = @locker.locker_id
+				@locker.save!
+				@user.save!	
+
+				flash[:success] = "#{@user.email} has been assigned to locker #{@locker.locker_id}"
+
+			#admin chose to delete user from locker
+			else
+				#get correct locker status and shared value
+				if @locker_users < 2  
+					@locker.shared = false
+					@locker.status = "Free"
+				elsif @locker_users < 3
+					@locker.shared = false
+					@locker.status = "Assigned"
+				elsif @locker_users > 2
+					@locker.shared = true
+					@locker.status = "Assigned"
+				end
+
+				#delete user's locker id, save locker and user
+				@selected_user.locker_id = nil
+				@locker.save
+				@selected_user.save
+
+				flash[:success] = "#{@selected_user.email} has been removed from locker #{@locker.locker_id}"
 			end
-
-			@selected_user.locker_id = @locker.locker_id
-			@locker.save
-			@selected_user.save	
 			
-			flash[:success] = "#{@selected_user.email} has been assigned to locker #{@selected_user.locker_id}"
-		
 			render 'show'
 		end
-
 	end 
-
-	def test
-		@locker = Locker.find(params[:format])
-	
-		@assigned_user = User.where(locker_id: @locker.locker_id)
-
-		$count = @assigned_user.count
-
-		$i = 0
-
-		while $i < $count  do
-   			#puts("Inside the loop i = #$i" )
-   			#add email of user
-   			$i += 1
-		end
-		
-		flash[:danger] = "locker is #{@locker.locker_id} with #{$count} users"
-	end
 
 
 	def show
+		#show needs to show users details if applicable
+		@selected_user = User.find(params[:user])
 		@locker = Locker.find(params[:id])
 	end
 
@@ -124,5 +144,4 @@ class LockerController < ApplicationController
 		def edit_params
 			params.require(:user).permit(:email, :locker_id)
 		end
-	
 end
