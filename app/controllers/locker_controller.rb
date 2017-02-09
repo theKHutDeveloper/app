@@ -1,5 +1,6 @@
 class LockerController < ApplicationController
 	before_action :authenticate_user!
+	before_action :edit_params, :only =>[ :update]
 
 	def index
 		if current_user.admin? && params[:status].blank?
@@ -27,7 +28,7 @@ class LockerController < ApplicationController
 		if current_user.admin?
 			@locker = Locker.new(locker_params)
 
-			if Locker.exists?(locker_id: @locker.locker_id)
+			if Locker.exists?(locker_ref: @locker.ref)
 				flash[:danger] = "Error - You attempted to create a locker that already exists"
 				render 'new'
 			else
@@ -47,7 +48,7 @@ class LockerController < ApplicationController
 		if current_user.admin?
 			@locker = Locker.find(params[:id])
 			@users = User.where(locker_id: nil)
-			@assigned_users = User.where(locker_id: @locker.locker_id)
+			@assigned_users = User.where(locker_id: @locker.id)
 			@assigned = false
 
 			if @assigned_users.count > 0
@@ -61,87 +62,93 @@ class LockerController < ApplicationController
 
 
 	def update
-		#return the specified locker
-		@locker = Locker.find(params[:id])
+		@locker = Locker.find(params[:id])    		
+		@locker.update_attributes(locker_params)
+		mytest = params[edit_params]
 
-		#count the number of users who are assigned to this locker id
-		@locker_users = User.where(locker_id: @locker.locker_id).count
 
-		if params[:user] #admin has selected user to delete
-			@selected_user = User.find(params[:user])
-		else #admin has selected user to add
-			params[:locker].each do |k, v|
-      			@found = v
-    		end
-    		#get the first(and only)user with specified email
-    		@user = User.where(email: @found).first
-		end
-
-    	#invalid user - no user selected for delete or addition
-    	if @selected_user.nil? && @user.nil?
-    			@locker.update(floor: @locker.floor)
-    			render 'show'
-    		
-		#valid user found
-		else
-			#admin chose to add user to locker
-			if @user.present?
-				@locker.status = "Assigned"
-
-				#not shared if no other users assigned the locker
-				if @locker_users.nil?
-					@locker.shared = false
-				elsif @locker_users > 0
-					@locker.shared = true
-				end
-
-				#add locker id to user, save locker and user record
-				@user.locker_id = @locker.locker_id
-				@locker.save!
-				@user.save!	
-
-				flash[:success] = "#{@user.email} has been assigned to locker #{@locker.locker_id}"
-
-			#admin chose to delete user from locker
-			else
-				#get correct locker status and shared value
-				if @locker_users < 2  
-					@locker.shared = false
-					@locker.status = "Free"
-				elsif @locker_users < 3
-					@locker.shared = false
-					@locker.status = "Assigned"
-				elsif @locker_users > 2
-					@locker.shared = true
-					@locker.status = "Assigned"
-				end
-
-				#delete user's locker id, save locker and user
-				@selected_user.locker_id = nil
-				@locker.save
-				@selected_user.save
-
-				flash[:success] = "#{@selected_user.email} has been removed from locker #{@locker.locker_id}"
-			end
-			
-			render 'show'
-		end
+		flash[:danger] = "#{edit_params}"
+		#puts mytest = params[:locker => :users]
+		#puts mytest2 = mytest[:users]
+		#@user = User.find(:locker)
+    	#@user = User.where(:locker =>{users: :id}).first
+		redirect_to locker_path(@locker.id)
 	end 
 
 
 	def show
 		#show needs to show users details if applicable
-		@selected_user = User.find(params[:user])
 		@locker = Locker.find(params[:id])
+		@assigned_users = @locker.users
+		@users = User.where(locker_id: nil)
+    
+
+		
+
+		# #valid user found
+		# else
+		# 	#admin chose to add user to locker
+		# 	if @user.present?
+		# 		@locker.status = "Assigned"
+
+		# 		#not shared if no other users assigned the locker
+		# 		if @locker_users.nil?
+		# 			@locker.shared = false
+		# 		elsif @locker_users > 0
+		# 			@locker.shared = true
+		# 		end
+
+		# 		#add locker id to user, save locker and user record
+		# 		@user.locker_id = @locker.id
+		# 		@locker.save!
+		# 		@user.save!	
+
+		# 		flash[:success] = "#{@user.email} has been assigned to locker #{@locker.ref}"
+
+		# 	#admin chose to delete user from locker
+		# 	else
+		# 		#get correct locker status and shared value
+		# 		if @locker_users < 2  
+		# 			@locker.shared = false
+		# 			@locker.status = "Free"
+		# 		elsif @locker_users < 3
+		# 			@locker.shared = false
+		# 			@locker.status = "Assigned"
+		# 		elsif @locker_users > 2
+		# 			@locker.shared = true
+		# 			@locker.status = "Assigned"
+		# 		end
+
+		# 		#delete user's locker id, save locker and user
+		# 		@selected_user.locker_id = nil
+		# 		@locker.save
+		# 		@selected_user.save
+
+		# 		flash[:success] = "#{@selected_user.email} has been removed from locker #{@locker.ref}"
+		# 	end
+		
 	end
 
 	private
 
 		def locker_params
-			params.require(:locker).permit(:locker_id, :floor, :location, :size, :status, :shared)
+			params.require(:locker).permit(
+				:ref, :floor, :location, :size, :status, :shared
+				)
 		end
 
 		def edit_params
-			params.require(:user).permit(:email, :locker_id)
+			#params.require(:locker).permit(:users)
+			params.permit(locker: [ users: [:id]])
+			#params.permit(users: [:id])
+			#params.require(:locker).permit(:users).permit(:id)
+			#params.permit(:utf8, :authenticity_token, :locker[:user[:id]], :id)
+			
+			#params.permit[:locker, { users: :id } ]
+			# params.permit
+			# params.permit(:locker)
+			# params.permit(:users)
+			#params.require(:user).permit(:email, :locker_id)
+			#params.require(:locker).permit(user: [:locker_id])
 		end
 end

@@ -1,0 +1,23 @@
+<%= simple_form_for @locker do |f| %>
+	<p>
+		<%= f.label :locker_id %><br>
+		<%= f.text_field :locker_id %>
+	</p>
+
+	<p>
+		<%= f.label :floor %><br>
+		<%= f.text_field :floor %>
+	</p>
+
+	<p>
+		<%= f.label :location %><br>
+		<%= f.text_field :location %>
+	</p>
+
+	<p>
+		<%= f.label :size %><br>
+		<%= f.text_field :size %>
+	</p>
+
+	<%= f.button :submit %>
+<% end %>

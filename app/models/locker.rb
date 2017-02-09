@@ -4,9 +4,9 @@ class Locker < ApplicationRecord
 	accepts_nested_attributes_for :users
 	
 	scope :available, -> { where(status: "Free") }
-	scope :complete, -> {order("locker_id DESC")}
+	scope :complete, -> {order("ref DESC")}
 
-	validates :locker_id, presence: true
+	validates :ref, presence: true
 	validates :floor, presence: true
 	validates :size, presence: true
 	validates :location, presence: true

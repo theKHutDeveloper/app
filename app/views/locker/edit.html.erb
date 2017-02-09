@@ -8,23 +8,19 @@
 <table class="table table-striped">
 	<tr>
 		<th></th>
-		<th>Locker no.</th>
+		<th>Locker ref.</th>
 		<th>Floor no.</th>
 		<th>Location</th>
 		<th>Size</th>
 		<th>Status</th>
 		<th>Shared</th>
-		<% if @assigned == true %>
-			<th>Assigned Users</th>
-			<th></th>
-		<% end %>
 	</tr>
 
 	<%= simple_form_for @locker, wrapper: :inline_form, html: { class: 'form-inline' } do |f| %>
 	<tr>
   		<td style="vertical-align:middle; padding-top:0.5px;"><a href= '#' class="btn btn-danger btn-xs" role="button">Delete Locker</a></td>
   
-  		<td><%= f.input :locker_id, disabled: true %></td>
+  		<td><%= f.input :ref, disabled: true %></td>
   
   		<td><%= f.input :floor %></td>
   	
@@ -35,38 +31,12 @@
   		<td><%= f.input :status, disabled: true %></td>
   
   		<td><%= f.input :shared, disabled: true %></td>
-  
-  		<% if @assigned == true %>
-			<% @assigned_users.each do |assigned_user| %>
-		
-				<td style="vertical-align:middle; padding-top:0.5px;"><%= assigned_user.email %></td>	
-		
-				<td style="vertical-align:middle; padding-top:0.5px;">
-					<%= link_to '<button type="button" class="btn btn-danger btn-xs">Delete</button>'.html_safe,
-					locker_path(@locker, :user => assigned_user), :method => :put%>
-				</td>
-		
-				<tr></tr>
-		
-				<td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-			<% end %>
-	
-			<td></td><td></td>
-  		<% end %>
-  
 	</tr>
 
 </table>
 
 
-<div>
-	<h4>Select user/s to assign to locker <%= @locker.locker_id %></h4>
-	
-		<%= f.collection_select :users, @users, :email, :email , {prompt: "Select"}, {class: "form-control"} %>	
-		<br><br>
-		
-		
-</div>
+
 <%= f.submit %>
 <% end %>	
 

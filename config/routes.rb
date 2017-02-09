@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   
   resources :user
   resources :locker
+  resources :locker_assignment, only:[:create]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
 end

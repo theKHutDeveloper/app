@@ -26,13 +26,15 @@
 <form class="form-inline">
 	<div class="form-group">
     	<label for="exampleInputName2">Filter</label>
-    	<input type="text" class="form-control" id="exampleInputName2" placeholder="Verify">
+    	<input type="text" class="form-control" id="exampleInputName2" 
+    	placeholder="Verify">
   	</div>
   
   	<!-- Split button -->
   	<div class="btn-group">
   		<button type="button" class="btn btn-default">Filter</button>
-  		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  		<button type="button" class="btn btn-default dropdown-toggle" 
+  		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     		<span class="caret"></span>
     		<span class="sr-only">Toggle Dropdown</span>
   		</button>
@@ -48,12 +50,13 @@
 
 <table class="table table-striped">
 	<tr>
-		<th>Locker no.</th>
+		<th>Locker ref.</th>
 		<th>Floor no.</th>
 		<th>Location</th>
 		<th>Size</th>
 		<th>Status</th>
-		<% if (current_user.admin? && params[:status].blank?) || (params[:status] == 'Free' && current_user.locker_id.nil?) %>
+		<% if (current_user.admin? && params[:status].blank?) || 
+			(params[:status] == 'Free' && current_user.locker_id.nil?) %>
 			<th></th>
 		<% end %>
 	</tr>
@@ -61,9 +64,9 @@
 	<% @locker.each do |locker| %>
 	<tr>
 		<% if current_user.admin? && params[:status].blank? %>
-			<td><%= link_to locker.locker_id, locker_path(locker) %></td>
+			<td><%= link_to locker.ref, locker_path(locker) %></td>
 		<% else %>
-			<td><%= locker.locker_id %></td>
+			<td><%= locker.ref %></td>
 		<% end %>
 
 		<td><%= locker.floor %></td>
@@ -73,9 +76,13 @@
 
 		<% if current_user.admin? && params[:status].blank? %>
 			<% if locker.status == 'Free' %>
-				<td><a href= <%=edit_locker_path(locker)%> class="btn btn-primary btn-xs" role="button">Assign Locker</a></td>
+				<td><a href= <%=locker_path(locker)%> 
+				class="btn btn-primary btn-xs" role="button">Assign Locker</a>
+				</td>
 			<% else %>
-				<td><a href= <%=edit_locker_path(locker)%> class="btn btn-info btn-xs" role="button">Edit Locker</a></td>
+				<td><a href= <%=locker_path(locker)%> 
+				class="btn btn-info btn-xs" role="button">Edit Locker</a>
+				</td>
 			<% end %>
 		<% elsif params[:status] == 'Free' && current_user.locker_id.nil? %>
 			<td><a href= '#' class="btn btn-primary btn-xs" 
