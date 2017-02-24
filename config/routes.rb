@@ -8,8 +8,7 @@ Rails.application.routes.draw do
  
   
   get 'user/show'
-
-  
+  get 'locker/remove_user'
   
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 

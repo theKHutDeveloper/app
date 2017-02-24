@@ -8,7 +8,7 @@
 <%= simple_form_for @locker, url: locker_index_path do |f| %>
 	<%= f.error_notification %>
 		
-	<%= f.input :locker_id, error: 'Locker ID is mandatory, please specify' %>
+	<%= f.input :ref, error: 'Locker ref is mandatory, please specify' %>
 	<%= f.input :floor, error: 'Floor is mandatory, please specify' %>
 	<%= f.input :location, error: 'Location is mandatory, please specify'%>
 	<%= f.input :size,  error: 'Size is mandatory, please specify' %>

@@ -50,16 +50,18 @@
     <h3 class="panel-title">Assigned Users</h3>
   </div>
   <table class="table">	
+
   	<% @assigned_users.each do |assigned_user| %>
     	<tr>
   					<td style="padding-right: 15px; padding-bottom: 10px;"><%= assigned_user.email %></td>	
 					<td>
 						<%= link_to '<button type="button" class="btn btn-danger btn-xs">Delete</button>'.html_safe,
-						'#' %>	
+						locker_remove_user_path(assigned_user) %>	
 							
 					</td>
 				</tr>
     <% end %>
+    
     </table>
 </div>
 </div>
@@ -72,8 +74,6 @@
   <div class="panel-body" >	
 		<%= simple_form_for @locker do |f| %>
 			<%= f.collection_select :users, @users, :id, :email , {:include_blank => 'Please Select'} %>	
-			
-			
 			<%= f.submit %>
 		<% end %>
   </div>

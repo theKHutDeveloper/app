@@ -26,6 +26,10 @@ class UserController < ApplicationController
     def show
       if current_user
         @lockers = Locker.joins(:users)
+
+        if !current_user.locker_id.nil?
+            @locker = Locker.find(current_user.locker_id)
+        end
       end
     end
 

@@ -28,13 +28,13 @@ class LockerController < ApplicationController
 		if current_user.admin?
 			@locker = Locker.new(locker_params)
 
-			if Locker.exists?(locker_ref: @locker.ref)
+			if Locker.exists?(ref: @locker.ref)
 				flash[:danger] = "Error - You attempted to create a locker that already exists"
 				render 'new'
 			else
 				if @locker.save
 					flash[:success] = "You successfully created a new locker"
-					render 'show'
+					redirect_to admin_simple_index_path
 				else
 					render 'new'
 				end
@@ -63,21 +63,52 @@ class LockerController < ApplicationController
 
 	def update
 		@locker = Locker.find(params[:id])    		
-		@locker.update_attributes(locker_params)
-		mytest = params[edit_params]
+		@user = User.find(params[:locker][:users])
+		@assigned_users = User.where(locker_id: @locker.id)
 
+		if @assigned_users.count > 0
+			@locker.shared = true
+		else
+			@locker.shared = false
+		end
 
-		flash[:danger] = "#{edit_params}"
-		#puts mytest = params[:locker => :users]
-		#puts mytest2 = mytest[:users]
-		#@user = User.find(:locker)
-    	#@user = User.where(:locker =>{users: :id}).first
+		@user.locker_id = @locker.id
+		@locker.status = "Assigned"
+		@locker.save
+		@user.save
+
+		flash[:success] = "#{@user.email} has been successfully assigned to locker #{@locker.ref}"
+	
 		redirect_to locker_path(@locker.id)
 	end 
 
+	def remove_user
+		@removed_user = User.find(params[:format])
+		@locker = Locker.find(@removed_user.locker_id)
+		@assigned = (@locker.users.count) - 1
+		@removed_user.locker_id = nil
+
+		if @assigned < 2  
+			@locker.shared = false
+		else 
+			@locker.shared = true
+		end
+
+		if @assigned < 1
+			@locker.status = "Free"
+		else
+			@locker.status = "Assigned"
+		end
+		
+		@locker.save
+		@removed_user.save
+		
+		flash[:success] = "#{@removed_user.email} has been removed from locker #{@locker.ref}"
+		redirect_to locker_path(@locker.id)
+	end
 
 	def show
-		#show needs to show users details if applicable
+		
 		@locker = Locker.find(params[:id])
 		@assigned_users = @locker.users
 		@users = User.where(locker_id: nil)

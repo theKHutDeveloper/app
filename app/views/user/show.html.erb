@@ -28,12 +28,12 @@
 			<td><%= current_user.firstname %></td>
 			<td><%= current_user.lastname %></td>
 			<td><%= current_user.email %></td>
-			<td><%= current_user.locker_id %></td>
 			
-				
-			
-
-			
+			<% if !@locker.nil? %>
+				<td><%= @locker.ref %></td>
+			<% else %>
+				<td>--</td>
+			<% end %>
 		</tr>
 
 	</tbody>
