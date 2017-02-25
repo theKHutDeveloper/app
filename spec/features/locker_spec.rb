@@ -106,6 +106,23 @@ RSpec.feature 'Testing functionality of the Locker features' do
 	end
 
 	scenario 'Admin deletes an assigned locker' do
+		create_single_locker
+		create_user
+		create_admin
+		log_in(@user.email, @user.password)
+		visit root_path
+		page.click_link('', :href => '/admin_simple/index')
+		click_link('Edit lockers')
+		click_link('Assign Locker')
+		select @non_admin.email, :from => @users
+		click_button('Update Locker')
+		visit root_path
+		page.click_link('', :href => '/admin_simple/index')
+		click_link('Edit lockers')
+		click_link('Edit Locker')
+		click_link('Edit Locker')
+		click_link('Delete Locker')
+		expect(@user.locker_id == nil)
 	end
 
 	scenario 'Admin assigns a locker to a user' do

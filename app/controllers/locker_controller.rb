@@ -119,8 +119,22 @@ class LockerController < ApplicationController
 	end
 
 	def destroy
-		Locker.find(params[:id]).destroy
-		flash[:success] = "Locker has been deleted"
+		@locker = Locker.find(params[:id])
+		@users = User.where(locker_id: @locker.id)
+
+		if @users.nil?
+			Locker.find(params[:id]).destroy
+			flash[:success] = "Locker has been deleted"
+		else
+			@users.each do |user|
+				user.locker_id = nil
+				user.save
+			end
+			Locker.find(params[:id]).destroy
+			flash[:success] = "Locker has been deleted"
+		end
+		
+
 		redirect_to locker_index_path
 	end
 
