@@ -1,61 +1,29 @@
 <div class="jumbotron">
   <h1 id="header">Locker Dashboard</h1>
-  <p id="welcome">Edit Locker</p>
+  <p id="welcome">Edit Locker <%= @locker.ref%> </p>
 </div>
 
+<%= link_to '<button type="button" class="btn btn-danger btn-xs">Delete Locker</button>'.html_safe, 
+	@locker, method: :delete, data: { confirm: "You sure?"} %>	
+<br><br>
 
+<%= simple_form_for @locker do |f| %>
+  <%= f.input :ref %>
+  <%= f.input :floor %>
+  <%= f.input :location %>
+  <%= f.input :size %>
+  <%= f.input :status, disabled: true %>
+  <%= f.input :shared, disabled: true %>
+  <%= f.button :submit %>
+<% end %>
+			
 
-<table class="table table-striped">
-	<tr>
-		<th></th>
-		<th>Locker ref.</th>
-		<th>Floor no.</th>
-		<th>Location</th>
-		<th>Size</th>
-		<th>Status</th>
-		<th>Shared</th>
-	</tr>
-
-	<%= simple_form_for @locker, wrapper: :inline_form, html: { class: 'form-inline' } do |f| %>
-	<tr>
-  		<td style="vertical-align:middle; padding-top:0.5px;"><a href= '#' class="btn btn-danger btn-xs" role="button">Delete Locker</a></td>
-  
-  		<td><%= f.input :ref, disabled: true %></td>
-  
-  		<td><%= f.input :floor %></td>
-  	
-  		<td><%= f.input :location %></td>
-  
-  		<td><%= f.input :size %></td>
-  
-  		<td><%= f.input :status, disabled: true %></td>
-  
-  		<td><%= f.input :shared, disabled: true %></td>
-	</tr>
-
-</table>
-
-
-
-<%= f.submit %>
-<% end %>	
-
-
-
-<!--
-#link_to "Add as friend", user_friend_path(current_user, @friend), :method=> :put
 	
-<%= link_to #'<button type="button" class="btn btn-danger btn-xs">Delete</button>'.html_safe,
-			#			:controller => 'locker', :action => :update,
-			#			data: {confirm: "Are you sure you want to delete user #{assigned_user.email}?"}
-					
-					 	%>
-user_path(assigned_user.email) 
-	Admin should only be able to delete a locker if there are no users. If there are users and the admin has pressed on the delete button, alert them that they can not delete a locker while users are still attached to it.
 
-	Added delete button next to user email, hopefully I will be able to delete a user from here
 
-	data = "{confirm('Are you sure?')}" is not working properly I think!!
--->
 
+
+
+			
+		
 

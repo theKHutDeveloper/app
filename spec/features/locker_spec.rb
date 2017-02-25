@@ -12,13 +12,6 @@ def create_user
 	password: 'jarvis', firstname: 'tony', lastname: 'stark', admin: 'false'
 end
 
-=begin
-def create_assigned_locker_and_its_user
-	@assigned_user = User.create email:'luke_cage@superhero.com', password: 'harlem_heat', firstname: 'luke', lastname: 'cage', admin: 'false', locker_id: 'G002'
-	@assigned_locker = Locker.create(ref: 'G002', floor: 3, location: 'Verify Team', shared: false, size: 1, status: 'Assigned')
-end
-=end
-
 def log_in(email, password)
 	visit root_path
 	click_link('Log In')
@@ -33,11 +26,6 @@ end
 
 RSpec.feature 'Testing functionality of the Locker features' do
 
-#working
-	scenario 'User views available lockers' do
-		#completed in welcome_spec.rb
-	end
-
 #failing
 	scenario ' - User requests to be assigned a locker' do
 		#being able to test the alert box is a problem
@@ -50,7 +38,7 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		expect(page).to have_content('Your request has been sent!')
 	end
 
-#working
+
 	scenario 'User attempts to amend assigned locker' do
 		create_user
 		log_in(@non_admin.email, @non_admin.password)
@@ -59,7 +47,6 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		expect(page).to have_content('You do not have permission to access this page')
 	end
 
-#working
 	scenario 'User views their assigned locker' do
 		create_user
 		log_in(@non_admin.email, @non_admin.password)
@@ -71,7 +58,6 @@ RSpec.feature 'Testing functionality of the Locker features' do
 	
 	end
 
-#working
 	scenario 'Admin creates a new locker' do
 		create_admin
 		log_in(@user.email, @user.password)
@@ -90,17 +76,38 @@ RSpec.feature 'Testing functionality of the Locker features' do
 	end
 
 	scenario 'Admin edits a locker' do
-		#I should be able to amend locker details, but I can't with the way it 
-		#is currently set up
+		create_single_locker
+		create_user
+		create_admin
+		log_in(@user.email, @user.password)
+		visit root_path
+		page.click_link('', :href => '/admin_simple/index')
+		click_link('Edit lockers')
+		click_link('Assign Locker')
+		click_link('Edit Locker')
+		fill_in 'Floor', :with => '30001'
+		click_button('Update Locker')
+		expect(page).to have_content('30001')
+		expect(page).to have_content('You successfully updated locker G001')
 	end
 
 	scenario 'Admin deletes a free locker' do
+		create_single_locker
+		create_user
+		create_admin
+		log_in(@user.email, @user.password)
+		visit root_path
+		page.click_link('', :href => '/admin_simple/index')
+		click_link('Edit lockers')
+		click_link('Assign Locker')
+		click_link('Edit Locker')
+		click_link('Delete Locker')
+		expect(page).to have_content('Locker has been deleted')
 	end
 
 	scenario 'Admin deletes an assigned locker' do
 	end
 
-	#working
 	scenario 'Admin assigns a locker to a user' do
 		create_single_locker
 		create_user
@@ -115,7 +122,6 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		expect(page).to have_content('ironman@stark.industries.com has been successfully assigned to locker G001')
 	end
 
-#failing
 	scenario '- Admin removes user from locker' do
 		create_single_locker
 		create_user
