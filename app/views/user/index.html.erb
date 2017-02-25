@@ -4,6 +4,44 @@
   <p id="welcome">Locker Members</p>
 </div>
 
+<br>
+
+<%= will_paginate @users, :renderer => BootstrapPagination::Rails %>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="button">Go!</button>
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+
+<form class="form-inline">
+	<div class="form-group">
+    	<label for="exampleInputName2">Filter</label>
+    	<input type="text" class="form-control" id="exampleInputName2" 
+    	placeholder="Verify">
+  	</div>
+  
+  	<!-- Split button -->
+  	<div class="btn-group">
+  		<button type="button" class="btn btn-default">Filter</button>
+  		<button type="button" class="btn btn-default dropdown-toggle" 
+  		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    		<span class="caret"></span>
+    		<span class="sr-only">Toggle Dropdown</span>
+  		</button>
+  		<ul class="dropdown-menu">
+    		<li><a href="#">First Name</a></li>
+    		<li><a href="#">Last Name</a></li>
+    		<li><a href="#">Email</a></li>
+    		<li><a href="#">Locker</a></li>
+  		</ul>
+	</div>
+</form>
+
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -34,4 +72,4 @@
 	</tbody>
 </table>
 
-
+<%= will_paginate @users, :renderer => BootstrapPagination::Rails %>

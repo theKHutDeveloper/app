@@ -3,7 +3,7 @@ class UserController < ApplicationController
     before_action :admin_user, :only =>[ :index]
 
     def index
-      @users = User.all
+      @users = User.all.paginate(:page => params[:page], :per_page => 10)
       @lockers = Locker.joins(:users)
       
     end

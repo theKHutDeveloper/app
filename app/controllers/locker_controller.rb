@@ -5,9 +5,9 @@ class LockerController < ApplicationController
 
 	def index
 		if current_user.admin? && params[:status].blank?
-			@locker = Locker.complete
+			@locker = Locker.complete.paginate(:page => params[:page], :per_page => 10)
 		elsif current_user && params[:status] == 'Free'
-			@locker = Locker.available
+			@locker = Locker.available.paginate(:page => params[:page], :per_page => 10)
 		else
 			flash[:danger] = "You do not have permission to access this page"
 			redirect_to root_path
