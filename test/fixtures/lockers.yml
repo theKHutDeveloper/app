@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  'no': G001
+  ref: G001
   floor: 3
   location: Verify Team
   shared: false
@@ -9,7 +9,7 @@ one:
   status: Free
 
 two:
-  'no': G002
+  ref: G002
   floor: 3
   location: PAAS
   shared: false
@@ -17,7 +17,7 @@ two:
   status: Assigned
 
 three:
-  'no': G003
+  ref: G003
   floor: 6
   location: Content Team
   shared: true

@@ -42,34 +42,35 @@
 	</div>
 </form>
 
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th> </th>
-			<th>Email</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Locker</th>
-			<th> </th>
-		</tr>
-	</thead>
+<br><br><br>
 
-	<tbody>
-		<% @users.each do |user| %>
-			<tr>
-			<td><a href= '#' class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
-			<td><%= user.email %></td>
-			<td><%= user.firstname%></td>
-			<td><%= user.lastname %></td>
-			<% if user.locker_id == "" %>
-				<td>--</td>
-			<% else %>
-				<td><%= user.locker_id %></td>
-			<% end %>
-			<td><a href= '#' class="btn btn-primary btn-xs" role="button">Edit</a></td>
-			</tr>
+<table class="table table-striped">
+	<tr>
+		<th> </th>
+		<th>Email</th>
+		<th>First Name</th>
+		<th>Last Name</th>
+		<th>Locker</th>
+		<th> </th>
+	</tr>
+	
+	<% @users.each do |user| %>
+	<tr>
+		<td><a href= '#' class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+
+		<td><%= user.email %></td>
+		<td><%= user.firstname%></td>
+		<td><%= user.lastname %></td>
+			
+		<% if user.locker_id == "" %>
+			<td>--</td>
+		<% else %>
+			<td><%= user.locker_id %></td>
 		<% end %>
-	</tbody>
+		
+		<td><a href= '#' class="btn btn-primary btn-xs" role="button">Edit</a></td>
+	</tr>
+	<% end %>
 </table>
 
 <%= will_paginate @users, :renderer => BootstrapPagination::Rails %>

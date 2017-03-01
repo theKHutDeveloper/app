@@ -43,6 +43,7 @@ gem 'simple_form', '~> 3.4'
 gem 'rails_admin', '~> 1.1', '>= 1.1.1'
 gem 'will_paginate', '~> 3.1.1'
 gem 'will_paginate-bootstrap'
+gem 'filterrific'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
