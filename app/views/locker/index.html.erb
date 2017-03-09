@@ -7,12 +7,9 @@
 <div class="jumbotron">
   <h1 id="header">Locker Dashboard</h1>
   <p id="welcome"><%=heading %></p>
-
 </div>
 
-<%= will_paginate @locker, :renderer => BootstrapPagination::Rails %>
-    
-<br>
+<%= will_paginate @locker, :renderer => BootstrapPagination::Rails %><br>
 
 <div class="row">
   <div class="col-lg-4">
@@ -76,19 +73,9 @@
 		<td><%= locker.status %></td>
 
 		<% if current_user.admin? && params[:status].blank? %>
-			<% if locker.status == 'Free' %>
-				<td><a href= <%=locker_path(locker)%> 
-				class="btn btn-primary btn-xs" role="button">Assign Locker</a>
-				</td>
-			<% else %>
-				<td><a href= <%=locker_path(locker)%> 
-				class="btn btn-info btn-xs" role="button">Edit Locker</a>
-				</td>
-			<% end %>
+			<td><a href= <%=locker_path(locker)%> class="btn btn-primary btn-xs" role="button">Edit Locker</a></td>
 		<% elsif params[:status] == 'Free' && current_user.locker_id.nil? %>
-			<td><a href= '#' class="btn btn-primary btn-xs" 
-			onclick="alert('Your request has been sent')"
-			role="button">Request This Locker</a></td>
+			<td><a href= '#' class="btn btn-primary btn-xs" onclick="alert('Your request has been sent')" role="button">Request This Locker</a></td>
 		<% end %>
 
 	</tr>

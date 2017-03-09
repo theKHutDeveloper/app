@@ -46,7 +46,7 @@
 
 <table class="table table-striped">
 	<tr>
-		<th> </th>
+		
 		<th>Email</th>
 		<th>First Name</th>
 		<th>Last Name</th>
@@ -56,19 +56,23 @@
 	
 	<% @users.each do |user| %>
 	<tr>
-		<td><a href= '#' class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+		
 
 		<td><%= user.email %></td>
 		<td><%= user.firstname%></td>
 		<td><%= user.lastname %></td>
 			
-		<% if user.locker_id == "" %>
+		<% if user.locker_id == "" || user.locker_id.nil? %>
 			<td>--</td>
 		<% else %>
-			<td><%= user.locker_id %></td>
+      <% @locker.each do |locker| %>
+        <% if locker.id == user.locker_id %>
+			     <td><%= locker.ref %></td>
+        <% end %>
+      <% end %>
 		<% end %>
 		
-		<td><a href= '#' class="btn btn-primary btn-xs" role="button">Edit</a></td>
+		<td><a href= <%=edit_user_path(user.id)%> class="btn btn-primary btn-xs" role="button">Edit</a></td>
 	</tr>
 	<% end %>
 </table>

@@ -1,2 +1,17 @@
-<h1>User#edit</h1>
-<p>Find me in app/views/user/edit.html.erb</p>
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+  <p id="welcome">Edit User: <%= @user.firstname%> <%= @user.lastname %> </p>
+</div>
+
+
+<%= link_to '<button type="button" class="btn btn-danger btn-xs">Delete User</button>'.html_safe, 
+					@user, method: :delete, data: { confirm: "Are you sure?"} %>
+
+<%= simple_form_for @user do |f| %>
+	<%= f.input :admin %>
+	<%= f.input :firstname, disabled: true %>
+	<%= f.input :lastname, disabled: true %>
+	<%= f.input :email, disabled: true %>
+	<%= f.button :submit %>
+<% end %>
+

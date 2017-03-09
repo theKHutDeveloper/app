@@ -1,11 +1,10 @@
-require 'test_helper'
+require 'rails_helper'
 
-class LockerTest < ActiveSupport::TestCase
-	test "the truth" do
-      assert true
-  	end
+describe Locker do
 
-  	test 'available scope' do
+	fixtures :lockers
+
+	it 'tests the available scope' do
   		locker_one = Locker.new ref: lockers(:one).ref, floor: lockers(:one).floor, location: lockers(:one).location,
   		shared: lockers(:one).shared, size: lockers(:one).size, status: lockers(:one).status
 
@@ -24,4 +23,19 @@ class LockerTest < ActiveSupport::TestCase
   		@available = Locker.available.count
   		assert @available = 1 
   	end
+
+	it 'tests the functionality of the locker' do
+		new_locker = Locker.new ref: lockers(:one).ref, floor: lockers(:one).floor, location: lockers(:one).location,
+  		shared: lockers(:one).shared, size: lockers(:one).size, status: lockers(:one).status
+
+  		assert new_locker.save
+
+  		locker_copy = Locker.find(new_locker.id)
+  		assert_equal new_locker, locker_copy
+
+  		new_locker.ref = 'G390'
+  		assert new_locker.save
+
+  		assert new_locker.destroy
+	end
 end

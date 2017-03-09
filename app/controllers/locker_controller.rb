@@ -48,7 +48,6 @@ class LockerController < ApplicationController
 	def edit
 		if current_user.admin?
 			@locker = Locker.find(params[:id])
-
 		else
 			flash[:danger] = "You do not have permission to access this page"
 			redirect_to root_path
@@ -76,14 +75,12 @@ class LockerController < ApplicationController
 
 			flash[:success] = "#{@user.email} has been successfully assigned to locker #{@locker.ref}"
 		else
-			#if params[:floor][:location][size].present?
 			if @locker.update_attributes(edit_params)
 				flash[:success] = "You successfully updated locker #{@locker.ref}"
 			else
 				render 'edit'
 			end
 		end
-		
 		redirect_to locker_path(@locker.id)
 	end 
 

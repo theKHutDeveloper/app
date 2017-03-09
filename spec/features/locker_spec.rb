@@ -2,13 +2,13 @@ require File.dirname(__FILE__) + '/../rails_helper'
 require File.dirname(__FILE__) + '/../../test/test_helper.rb'
 
 def create_admin
-	@user = User.create email:'jj@test.com', password: 'password', 
+	@admin = User.create email:'jj@test.com', password: 'password', 
 	firstname: 'jessica', lastname: 'jones', admin: 'true'
 end
 
 
 def create_user
-	@non_admin = User.create email: 'ironman@stark.industries.com', 
+	@user = User.create email: 'ironman@stark.industries.com', 
 	password: 'jarvis', firstname: 'tony', lastname: 'stark', admin: 'false'
 end
 
@@ -26,41 +26,44 @@ end
 
 RSpec.feature 'Testing functionality of the Locker features' do
 
-#failing
+	scenario 'User views their assigned locker' do
+		create_user
+		log_in(@user.email, @user.password)
+		visit root_path
+		page.click_link('', :href => '/user/show')
+	end
+
+	#failing as the functionality has not been devised
 	scenario ' - User requests to be assigned a locker' do
-		#being able to test the alert box is a problem
 		create_single_locker
 		create_user
-		log_in(@non_admin.email, @non_admin.password)
+		log_in(@user.email, @user.password)
 		visit root_path
 		page.click_link('', :href => '/locker?status=Free')
 		click_link('Request This Locker')
 		expect(page).to have_content('Your request has been sent!')
 	end
 
-
 	scenario 'User attempts to amend assigned locker' do
 		create_user
-		log_in(@non_admin.email, @non_admin.password)
+		log_in(@user.email, @user.password)
 		visit root_path
 		visit locker_index_path
 		expect(page).to have_content('You do not have permission to access this page')
 	end
 
-	scenario 'User views their assigned locker' do
-		create_user
-		log_in(@non_admin.email, @non_admin.password)
+	scenario 'Admin views all lockers' do
+		create_admin
+		log_in(@admin.email, @admin.password)
 		visit root_path
-		page.click_link('', :href => '/user/show')
-	end
-
-	scenario 'User requests to remove their assigned locker' do
-	
+		page.click_link('', :href => '/admin_simple/index')
+		click_link('Edit lockers')
+		expect(page).to have_content('All Lockers')
 	end
 
 	scenario 'Admin creates a new locker' do
 		create_admin
-		log_in(@user.email, @user.password)
+		log_in(@admin.email, @admin.password)
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Create a new locker')
@@ -72,14 +75,11 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		expect(page).to have_content('You successfully created a new locker')
 	end
 
-	scenario 'Admin views all lockers' do
-	end
-
 	scenario 'Admin edits a locker' do
 		create_single_locker
 		create_user
 		create_admin
-		log_in(@user.email, @user.password)
+		log_in(@admin.email, @admin.password)
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Edit lockers')
@@ -95,7 +95,7 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		create_single_locker
 		create_user
 		create_admin
-		log_in(@user.email, @user.password)
+		log_in(@admin.email, @admin.password)
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Edit lockers')
@@ -109,12 +109,12 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		create_single_locker
 		create_user
 		create_admin
-		log_in(@user.email, @user.password)
+		log_in(@admin.email, @admin.password)
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Edit lockers')
 		click_link('Assign Locker')
-		select @non_admin.email, :from => @users
+		select @user.email, :from => @users
 		click_button('Update Locker')
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
@@ -129,12 +129,12 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		create_single_locker
 		create_user
 		create_admin
-		log_in(@user.email, @user.password)
+		log_in(@admin.email, @admin.password)
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Edit lockers')
 		click_link('Assign Locker')
-		select @non_admin.email, :from => @users
+		select @user.email, :from => @users
 		click_button('Update Locker')
 		expect(page).to have_content('ironman@stark.industries.com has been successfully assigned to locker G001')
 	end
@@ -143,12 +143,12 @@ RSpec.feature 'Testing functionality of the Locker features' do
 		create_single_locker
 		create_user
 		create_admin
-		log_in(@user.email, @user.password)
+		log_in(@admin.email, @admin.password)
 		visit root_path
 		page.click_link('', :href => '/admin_simple/index')
 		click_link('Edit lockers')
 		click_link('Assign Locker')
-		select @non_admin.email, :from => @users
+		select @user.email, :from => @users
 		click_button('Update Locker')
 		click_link('Home')
 		page.click_link('', :href => '/admin_simple/index')
