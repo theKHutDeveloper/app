@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201124954) do
+ActiveRecord::Schema.define(version: 20170310142334) do
 
   create_table "lockers", force: :cascade do |t|
     t.string   "ref"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 20170201124954) do
     t.string   "ancestry"
     t.boolean  "recipient_permanent_delete", default: false
     t.boolean  "sender_permanent_delete",    default: false
+    t.integer  "user_id"
+    t.integer  "recipient_id"
     t.index ["ancestry"], name: "index_messages_on_ancestry"
     t.index ["sent_messageable_id", "received_messageable_id"], name: "acts_as_messageable_ids"
   end

@@ -4,8 +4,7 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  acts_as_messageable :table_name => "messages", # default 'messages'
-         :required   => :body                  # default [:topic, :body]
+                 
         
 
   belongs_to :locker

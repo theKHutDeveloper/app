@@ -1,0 +1,14 @@
+<div class="jumbotron">
+  <h1 id="header">Locker Dashboard</h1>
+  <p id="welcome">Compose New Message</p>
+</div>
+<br>
+
+<%= simple_form_for @message, url: message_index_path do |f| %>
+  <%= f.input :user_id, label: 'From', disabled: true %>
+  <%= f.label :recipient_id, label: 'To' %>
+  <%= f.collection_select :messages, @recipient, :id, :email %>  
+  <%= f.input :topic %>
+  <%= f.input :body %>
+  <%= f.button :submit %>
+<% end %>
